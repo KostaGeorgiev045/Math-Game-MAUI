@@ -10,14 +10,17 @@ public partial class GamePage : ContentPage
 	int firstNumber = 0;
 	int secondNumber = 0;
 	int score = 0;
-	const int totalQuestions = 2;
-	int gameLeft = totalQuestions;
+    private int totalRounds;
+    private int currentRound;
 
-	public GamePage(string gameType)
+    public GamePage(string gameType, int rounds)
 	{
 		InitializeComponent();
 		GameType = gameType;
-		BindingContext = this;
+        totalRounds = rounds; // Use dynamic rounds
+		currentRound = 1;
+
+        BindingContext = this;
 
 		CreateNewQuestion();
 	}
@@ -60,7 +63,7 @@ public partial class GamePage : ContentPage
 			case "Addition":
 				isCorrect = answer == firstNumber + secondNumber; 
 				break;
-            case "Subraction":
+            case "Subtraction":
                 isCorrect = answer == firstNumber - secondNumber;
                 break;
             case "Multiplication":
@@ -72,15 +75,19 @@ public partial class GamePage : ContentPage
         }
 
 		ProcessAnswer(isCorrect);
+		currentRound++;
 
-		gameLeft--;
-		AnswerEntry.Text = "";
-
-		if (gameLeft > 0)
-			CreateNewQuestion();
-		else
-			GameOver();
-	}
+        // Check if we should continue or end the game
+        if (currentRound <= totalRounds)
+        {
+            CreateNewQuestion();
+            AnswerEntry.Text = string.Empty; // Clear the answer entry for the next question
+        }
+        else
+        {
+            GameOver();
+        }
+    }
 
 	private void GameOver()
 	{
@@ -94,7 +101,7 @@ public partial class GamePage : ContentPage
 
 		QuestionArea.IsVisible = false;
 		BackToMenuBtn.IsVisible = true;
-		GameOverLabel.Text = $"Game over! You got {score} out of {totalQuestions} right";
+		GameOverLabel.Text = $"Game over! You got {score} out of {totalRounds} right";
 
 		App.GameRepository.Add(new Game
 		{
@@ -107,7 +114,7 @@ public partial class GamePage : ContentPage
 	private void ProcessAnswer(bool isCorrect)
 	{
 		if (isCorrect)
-			score += 1;
+			score ++;
 
 		AnswerLabel.Text = isCorrect ? "Correct" : "Incorrect";
 	}

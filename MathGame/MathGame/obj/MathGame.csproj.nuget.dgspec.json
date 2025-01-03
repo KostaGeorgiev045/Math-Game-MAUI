@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\MAUI\\MathGame\\MathGame\\MathGame.csproj": {}
+    "C:\\Users\\barzi\\Documents\\GitHub\\Math-Game-MAUI\\MathGame\\MathGame\\MathGame.csproj": {}
   },
   "projects": {
-    "D:\\MAUI\\MathGame\\MathGame\\MathGame.csproj": {
+    "C:\\Users\\barzi\\Documents\\GitHub\\Math-Game-MAUI\\MathGame\\MathGame\\MathGame.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MAUI\\MathGame\\MathGame\\MathGame.csproj",
+        "projectUniqueName": "C:\\Users\\barzi\\Documents\\GitHub\\Math-Game-MAUI\\MathGame\\MathGame\\MathGame.csproj",
         "projectName": "MathGame",
-        "projectPath": "D:\\MAUI\\MathGame\\MathGame\\MathGame.csproj",
+        "projectPath": "C:\\Users\\barzi\\Documents\\GitHub\\Math-Game-MAUI\\MathGame\\MathGame\\MathGame.csproj",
         "packagesPath": "C:\\Users\\barzi\\.nuget\\packages\\",
-        "outputPath": "D:\\MAUI\\MathGame\\MathGame\\obj\\",
+        "outputPath": "C:\\Users\\barzi\\Documents\\GitHub\\Math-Game-MAUI\\MathGame\\MathGame\\obj\\",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
         "fallbackFolders": [

@@ -8,7 +8,7 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = MathGame
-build_property.ProjectDir = D:\MAUI\MathGame\MathGame\
+build_property.ProjectDir = C:\Users\barzi\Documents\GitHub\Math-Game-MAUI\MathGame\MathGame\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.CsWinRTAotOptimizerEnabled = true
@@ -22,43 +22,43 @@ build_property.CsWinRTUseWindowsUIXamlProjections = false
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/MAUI/MathGame/MathGame/App.xaml]
+[C:/Users/barzi/Documents/GitHub/Math-Game-MAUI/MathGame/MathGame/App.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = MathGame.App.xaml
 build_metadata.AdditionalFiles.TargetPath = App.xaml
 build_metadata.AdditionalFiles.RelativePath = App.xaml
 
-[D:/MAUI/MathGame/MathGame/AppShell.xaml]
+[C:/Users/barzi/Documents/GitHub/Math-Game-MAUI/MathGame/MathGame/AppShell.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = MathGame.AppShell.xaml
 build_metadata.AdditionalFiles.TargetPath = AppShell.xaml
 build_metadata.AdditionalFiles.RelativePath = AppShell.xaml
 
-[D:/MAUI/MathGame/MathGame/GamePage.xaml]
+[C:/Users/barzi/Documents/GitHub/Math-Game-MAUI/MathGame/MathGame/GamePage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = MathGame.GamePage.xaml
 build_metadata.AdditionalFiles.TargetPath = GamePage.xaml
 build_metadata.AdditionalFiles.RelativePath = GamePage.xaml
 
-[D:/MAUI/MathGame/MathGame/MainPage.xaml]
+[C:/Users/barzi/Documents/GitHub/Math-Game-MAUI/MathGame/MathGame/MainPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = MathGame.MainPage.xaml
 build_metadata.AdditionalFiles.TargetPath = MainPage.xaml
 build_metadata.AdditionalFiles.RelativePath = MainPage.xaml
 
-[D:/MAUI/MathGame/MathGame/PreviousGames.xaml]
+[C:/Users/barzi/Documents/GitHub/Math-Game-MAUI/MathGame/MathGame/PreviousGames.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = MathGame.PreviousGames.xaml
 build_metadata.AdditionalFiles.TargetPath = PreviousGames.xaml
 build_metadata.AdditionalFiles.RelativePath = PreviousGames.xaml
 
-[D:/MAUI/MathGame/MathGame/Resources/Styles/Colors.xaml]
+[C:/Users/barzi/Documents/GitHub/Math-Game-MAUI/MathGame/MathGame/Resources/Styles/Colors.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = MathGame.Resources.Styles.Colors.xaml
 build_metadata.AdditionalFiles.TargetPath = Resources\Styles\Colors.xaml
 build_metadata.AdditionalFiles.RelativePath = Resources\Styles\Colors.xaml
 
-[D:/MAUI/MathGame/MathGame/Resources/Styles/Styles.xaml]
+[C:/Users/barzi/Documents/GitHub/Math-Game-MAUI/MathGame/MathGame/Resources/Styles/Styles.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = MathGame.Resources.Styles.Styles.xaml
 build_metadata.AdditionalFiles.TargetPath = Resources\Styles\Styles.xaml

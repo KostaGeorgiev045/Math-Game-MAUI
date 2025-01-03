@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "yXOuGMPLW2w=",
+  "dgSpecHash": "2wHB5i3nBpM=",
   "success": true,
-  "projectFilePath": "D:\\MAUI\\MathGame\\MathGame\\MathGame.csproj",
+  "projectFilePath": "C:\\Users\\barzi\\Documents\\GitHub\\Math-Game-MAUI\\MathGame\\MathGame\\MathGame.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\barzi\\.nuget\\packages\\microsoft.extensions.configuration\\9.0.0\\microsoft.extensions.configuration.9.0.0.nupkg.sha512",
     "C:\\Users\\barzi\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\9.0.0\\microsoft.extensions.configuration.abstractions.9.0.0.nupkg.sha512",

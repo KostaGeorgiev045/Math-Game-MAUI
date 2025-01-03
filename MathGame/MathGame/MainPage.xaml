@@ -55,6 +55,25 @@
 
             </Grid>
 
+            <!-- Slider to Select Number of Rounds -->
+            <Label
+                Text="Select number of rounds:"
+                FontSize="18"
+                HorizontalOptions="Center"/>
+
+            <Slider
+                x:Name="RoundsSlider"
+                Minimum="1"
+                Maximum="20"
+                Value="5"
+                ValueChanged="OnRoundsChanged"/>
+
+            <Label
+                x:Name="RoundsLabel"
+                Text="Rounds: 5"
+                FontSize="18"
+                HorizontalOptions="Center"/>
+
 
         </VerticalStackLayout>
     </ContentView>
