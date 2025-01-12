@@ -5,83 +5,99 @@ namespace MathGame;
 
 public partial class GamePage : ContentPage
 {
-	public string GameType {  get; set; }
-
-	int firstNumber = 0;
-	int secondNumber = 0;
-	int score = 0;
-    private int totalRounds;
+	private const int MIN_NUMBER = 1;
+    private const int MAX_NUMBER_BASIC = 9;
+    private const int MAX_NUMBER_DIVISION = 99;
+    
+    private readonly string gameType;
+    private readonly int totalRounds;
     private int currentRound;
+    private int currentScore;
+    private int firstNumber;
+    private int secondNumber;
+    private readonly Random random;
 
     public GamePage(string gameType, int rounds)
-	{
-		InitializeComponent();
-		GameType = gameType;
-        totalRounds = rounds; // Use dynamic rounds
-		currentRound = 1;
-
+    {
+        InitializeComponent();
+        this.gameType = gameType;
+        totalRounds = rounds;
+        currentRound = 1;
+        currentScore = 0;
+        random = new Random();
+        
         BindingContext = this;
-
-		CreateNewQuestion();
-	}
-
-	private void CreateNewQuestion()
-	{
-		var gameOperand = GameType switch
-		{
-			"Addition" => "+",
-			"Subtraction" => "-",
-			"Multiplication" => "*",
-			"Division" => "/",
-			_ => ""
-		};
-
-		var random = new Random();
-
-		firstNumber = GameType != "Division" ? random.Next(1, 9) : random.Next(1, 99);
-		secondNumber = GameType != "Division" ? random.Next(1, 9) : random.Next(1, 99);
-
-        if(GameType == "Division")
-		{
-			while(firstNumber < secondNumber || firstNumber % secondNumber != 0)
-			{
-				firstNumber = random.Next(1, 99);
-				secondNumber = random.Next(1, 99);
-			} 
-		}
-
-		QuestionLabel.Text = $"{firstNumber} {gameOperand} {secondNumber}";
+        CreateNewQuestion();
     }
 
-	private void OnAnswerSubmitted(object sender, EventArgs e)
-	{
-		var answer = Int32.Parse(AnswerEntry.Text);
-		var isCorrect = false;
+    private void CreateNewQuestion()
+    {
+        string gameOperand = GetGameOperand();
+        GenerateNumbers();
+        QuestionLabel.Text = $"{firstNumber} {gameOperand} {secondNumber}";
+    }
 
-		switch (GameType)
-		{
-			case "Addition":
-				isCorrect = answer == firstNumber + secondNumber; 
-				break;
-            case "Subtraction":
-                isCorrect = answer == firstNumber - secondNumber;
-                break;
-            case "Multiplication":
-                isCorrect = answer == firstNumber * secondNumber;
-                break;
-            case "Division":
-                isCorrect = answer == firstNumber / secondNumber;
-                break;
+    private string GetGameOperand() => gameType switch
+    {
+        "Addition" => "+",
+        "Subtraction" => "-",
+        "Multiplication" => "*",
+        "Division" => "/",
+        _ => string.Empty
+    };
+
+    private void GenerateNumbers()
+    {
+        int maxNumber = gameType != "Division" ? MAX_NUMBER_BASIC : MAX_NUMBER_DIVISION;
+        
+        firstNumber = random.Next(MIN_NUMBER, maxNumber);
+        secondNumber = random.Next(MIN_NUMBER, maxNumber);
+
+        if (gameType == "Division")
+        {
+            EnsureValidDivision();
+        }
+    }
+
+    private void EnsureValidDivision()
+    {
+        while (firstNumber < secondNumber || firstNumber % secondNumber != 0)
+        {
+            firstNumber = random.Next(MIN_NUMBER, MAX_NUMBER_DIVISION);
+            secondNumber = random.Next(MIN_NUMBER, MAX_NUMBER_DIVISION);
+        }
+    }
+
+    private void OnAnswerSubmitted(object sender, EventArgs e)
+    {
+        if (!int.TryParse(AnswerEntry.Text, out int answer))
+        {
+            AnswerLabel.Text = "Please enter a valid number";
+            return;
         }
 
-		ProcessAnswer(isCorrect);
-		currentRound++;
+        bool isCorrect = CheckAnswer(answer);
+        ProcessAnswer(isCorrect);
+        HandleRoundProgress();
+    }
 
-        // Check if we should continue or end the game
+    private bool CheckAnswer(int answer) => gameType switch
+    {
+        "Addition" => answer == firstNumber + secondNumber,
+        "Subtraction" => answer == firstNumber - secondNumber,
+        "Multiplication" => answer == firstNumber * secondNumber,
+        "Division" => answer == firstNumber / secondNumber,
+        _ => false
+    };
+
+    private void HandleRoundProgress()
+    {
+        currentRound++;
+        
         if (currentRound <= totalRounds)
         {
             CreateNewQuestion();
-            AnswerEntry.Text = string.Empty; // Clear the answer entry for the next question
+            AnswerEntry.Text = string.Empty;
         }
         else
         {
@@ -89,38 +105,46 @@ public partial class GamePage : ContentPage
         }
     }
 
-	private void GameOver()
-	{
-		GameOperation gameOperation = GameType switch
-		{
-			"Addition" => GameOperation.Addition,
-			"Subtraction" => GameOperation.Subtraction,
-			"Multiplication" => GameOperation.Multiplication,
-			"Division" => GameOperation.Division,
-		};
+    private void GameOver()
+    {
+        GameOperation gameOperation = GetGameOperation();
+        
+        QuestionArea.IsVisible = false;
+        BackToMenuBtn.IsVisible = true;
+        GameOverLabel.Text = $"Game over! You got {currentScore} out of {totalRounds} right";
+        
+        SaveGameResult(gameOperation);
+    }
 
-		QuestionArea.IsVisible = false;
-		BackToMenuBtn.IsVisible = true;
-		GameOverLabel.Text = $"Game over! You got {score} out of {totalRounds} right";
+    private GameOperation GetGameOperation() => gameType switch
+    {
+        "Addition" => GameOperation.Addition,
+        "Subtraction" => GameOperation.Subtraction,
+        "Multiplication" => GameOperation.Multiplication,
+        "Division" => GameOperation.Division,
+        _ => throw new ArgumentException("Invalid game type")
+    };
 
-		App.GameRepository.Add(new Game
-		{
-			DatePlayed = DateTime.UtcNow,
-			Type = gameOperation,
-			Score = score
-		});
-	}
+    private void SaveGameResult(GameOperation gameOperation)
+    {
+        App.GameRepository.Add(new Game
+        {
+            DatePlayed = DateTime.UtcNow,
+            Type = gameOperation,
+            Score = currentScore
+        });
+    }
 
-	private void ProcessAnswer(bool isCorrect)
-	{
-		if (isCorrect)
-			score ++;
+    private void ProcessAnswer(bool isCorrect)
+    {
+        if (isCorrect)
+            currentScore++;
+            
+        AnswerLabel.Text = isCorrect ? "Correct" : "Incorrect";
+    }
 
-		AnswerLabel.Text = isCorrect ? "Correct" : "Incorrect";
-	}
-
-	private void OnBackToMenu(object sender, EventArgs e)
-	{
-		Navigation.PushAsync(new MainPage());
-	}
+    private void OnBackToMenu(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new MainPage());
+    }
 }
