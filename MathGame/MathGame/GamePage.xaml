@@ -49,5 +49,11 @@
             Clicked="OnBackToMenu"
             HorizontalOptions="Center"/>
 
+        <Label
+        x:Name="TimerLabel"
+        Text="Time Left: Unlimited"
+        FontSize="24"
+        HorizontalOptions="Center" />
+
     </VerticalStackLayout>
 </ContentPage>

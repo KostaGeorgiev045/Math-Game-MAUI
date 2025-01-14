@@ -11,30 +11,28 @@ public partial class GamePage : ContentPage
     
     private readonly string gameType;
     private readonly int totalRounds;
+    private readonly int timeLimit;
     private int currentRound;
     private int currentScore;
+    private int remainingTime;
     private int firstNumber;
     private int secondNumber;
     private readonly Random random;
+    private CancellationTokenSource timerCancellation;
 
-    public GamePage(string gameType, int rounds)
+    public GamePage(string gameType, int rounds, int timeLimit)
     {
         InitializeComponent();
         this.gameType = gameType;
         totalRounds = rounds;
+        this.timeLimit = timeLimit == 120 ? int.MaxValue : timeLimit; // Treat max as unlimited
+        this.remainingTime = timeLimit == 120 ? int.MaxValue : timeLimit; // Initialize remainingTime
         currentRound = 1;
         currentScore = 0;
         random = new Random();
         
         BindingContext = this;
-        CreateNewQuestion();
-    }
-
-    private void CreateNewQuestion()
-    {
-        string gameOperand = GetGameOperand();
-        GenerateNumbers();
-        QuestionLabel.Text = $"{firstNumber} {gameOperand} {secondNumber}";
+        StartGame();
     }
 
     private string GetGameOperand() => gameType switch
@@ -68,6 +66,62 @@ public partial class GamePage : ContentPage
         }
     }
 
+    #region Timer
+
+    private void StartGame()
+    {
+        StartTimer(); // Start the timer for the entire game session
+        StartRound(); // Start the first round
+    }
+
+    private void StartRound()
+    {
+        CreateNewQuestion();
+        if (timeLimit != int.MaxValue)
+        {
+            StartTimer();
+        }
+        else
+        {
+            TimerLabel.Text = "Time Left: Unlimited";
+        }
+    }
+
+    private void CreateNewQuestion()
+    {
+        string gameOperand = GetGameOperand();
+        GenerateNumbers();
+        QuestionLabel.Text = $"{firstNumber} {gameOperand} {secondNumber}";
+    }
+
+    private void StartTimer()
+    {
+        timerCancellation?.Cancel();
+        timerCancellation = new CancellationTokenSource();
+        var token = timerCancellation.Token;
+
+        Task.Run(async () =>
+        {
+            while (remainingTime > 0 && !token.IsCancellationRequested)
+            {
+                Dispatcher.Dispatch(() => TimerLabel.Text = $"Time Left: {remainingTime}s");
+                await Task.Delay(1000, token);
+                remainingTime--;
+            }
+
+            if (remainingTime <= 0 && !token.IsCancellationRequested)
+            {
+                Dispatcher.Dispatch(() =>
+                {
+                    TimerLabel.Text = "Time's up!";
+                    GameOver(); // End the game when time runs out
+                });
+            }
+        }, token);
+    }
+
+    #endregion
+
     private void OnAnswerSubmitted(object sender, EventArgs e)
     {
         if (!int.TryParse(AnswerEntry.Text, out int answer))
@@ -93,11 +147,12 @@ public partial class GamePage : ContentPage
     private void HandleRoundProgress()
     {
         currentRound++;
-        
+        timerCancellation?.Cancel(); // Stop current round's timer
+
         if (currentRound <= totalRounds)
         {
-            CreateNewQuestion();
             AnswerEntry.Text = string.Empty;
+            StartRound();
         }
         else
         {
@@ -108,7 +163,8 @@ public partial class GamePage : ContentPage
     private void GameOver()
     {
         GameOperation gameOperation = GetGameOperation();
-        
+
+        timerCancellation?.Cancel();
         QuestionArea.IsVisible = false;
         BackToMenuBtn.IsVisible = true;
         GameOverLabel.Text = $"Game over! You got {currentScore} out of {totalRounds} right";

@@ -3,79 +3,99 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MathGame.MainPage">
 
-    <ContentView>
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="50"
-            >
-            <Label
-                Text="This is your Maths Game!"
-                FontSize="32"
-                HorizontalOptions="Center"/>
-            <Label
-                Text="What game would you like to play?"
-                FontSize="32"
-                HorizontalOptions="Center"/>
+    <ScrollView>
+        <ContentView>
+            <VerticalStackLayout
+        Spacing="25"
+        Padding="50"
+        >
+                <Label
+            Text="This is your Maths Game!"
+            FontSize="32"
+            HorizontalOptions="Center"/>
+                <Label
+            Text="What game would you like to play?"
+            FontSize="32"
+            HorizontalOptions="Center"/>
 
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0"
-                        Margin="3"
-                        Text="Addition"
-                        Clicked="OnGameChosen"/>
-                <Button Grid.Column="1"
-                        Margin="3"
-                        Text="Subtraction"
-                        Clicked="OnGameChosen"/>
-                <Button Grid.Column="2"
-                        Margin="3"
-                        Text="Multiplication"
-                        Clicked="OnGameChosen"/>
-                <Button Grid.Column="3"
-                        Margin="3"
-                        Text="Division"
-                        Clicked="OnGameChosen"/>
-                <Button Grid.Row="1"
-                        Margin="7"
-                        Grid.ColumnSpan="4"
-                        BackgroundColor="ForestGreen"
-                        Text="View Previous Games"
-                        Clicked="OnViewPreviousGameChosen"/>
+                    <Button Grid.Column="0"
+                    Margin="3"
+                    Text="Addition"
+                    Clicked="OnGameChosen"/>
+                    <Button Grid.Column="1"
+                    Margin="3"
+                    Text="Subtraction"
+                    Clicked="OnGameChosen"/>
+                    <Button Grid.Column="2"
+                    Margin="3"
+                    Text="Multiplication"
+                    Clicked="OnGameChosen"/>
+                    <Button Grid.Column="3"
+                    Margin="3"
+                    Text="Division"
+                    Clicked="OnGameChosen"/>
+                    <Button Grid.Row="1"
+                    Margin="7"
+                    Grid.ColumnSpan="4"
+                    BackgroundColor="ForestGreen"
+                    Text="View Previous Games"
+                    Clicked="OnViewPreviousGameChosen"/>
 
-            </Grid>
+                </Grid>
 
-            <!-- Slider to Select Number of Rounds -->
-            <Label
-                Text="Select number of rounds:"
-                FontSize="18"
-                HorizontalOptions="Center"/>
+                <!-- Slider to Select Number of Rounds -->
+                <Label
+            Text="Select number of rounds:"
+            FontSize="18"
+            HorizontalOptions="Center"/>
 
-            <Slider
-                x:Name="RoundsSlider"
-                Minimum="1"
-                Maximum="20"
-                Value="5"
-                ValueChanged="OnRoundsChanged"/>
+                <Slider
+            x:Name="RoundsSlider"
+            Minimum="1"
+            Maximum="20"
+            Value="5"
+            ValueChanged="OnRoundsChanged"/>
 
-            <Label
-                x:Name="RoundsLabel"
-                Text="Rounds: 5"
-                FontSize="18"
-                HorizontalOptions="Center"/>
+                <Label
+            x:Name="RoundsLabel"
+            Text="Rounds: 5"
+            FontSize="18"
+            HorizontalOptions="Center"/>
 
+                <!-- Slider to Select Time Limit -->
+                <Label
+        Text="Select time limit per round (seconds):"
+        FontSize="18"
+        HorizontalOptions="Center" />
 
-        </VerticalStackLayout>
-    </ContentView>
+                <Slider
+        x:Name="TimeSlider"
+        Minimum="10"
+        Maximum="120"
+        Value="30"
+        ValueChanged="OnTimeChanged" />
+
+                <Label
+        x:Name="TimeLabel"
+        Text="Time: 30 seconds"
+        FontSize="18"
+        HorizontalOptions="Center" />
+
+            </VerticalStackLayout>
+        </ContentView>
+    </ScrollView>
 
 </ContentPage>
