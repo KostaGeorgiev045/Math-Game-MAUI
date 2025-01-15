@@ -5,7 +5,9 @@ namespace MathGame;
 
 public partial class GamePage : ContentPage
 {
-	private const int MIN_NUMBER = 1;
+    #region Variables
+
+    private const int MIN_NUMBER = 1;
     private const int MAX_NUMBER_BASIC = 9;
     private const int MAX_NUMBER_DIVISION = 99;
     
@@ -19,6 +21,10 @@ public partial class GamePage : ContentPage
     private int secondNumber;
     private readonly Random random;
     private CancellationTokenSource timerCancellation;
+
+    #endregion
+
+    #region Game Ininialization
 
     public GamePage(string gameType, int rounds, int timeLimit)
     {
@@ -35,19 +41,37 @@ public partial class GamePage : ContentPage
         StartGame();
     }
 
-    private string GetGameOperand() => gameType switch
+    private void CreateNewQuestion()
     {
-        "Addition" => "+",
-        "Subtraction" => "-",
-        "Multiplication" => "*",
-        "Division" => "/",
-        _ => string.Empty
-    };
+        string gameOperand = GetGameOperand();
+        GenerateNumbers();
+        QuestionLabel.Text = $"{firstNumber} {gameOperand} {secondNumber}";
+    }
+
+    private void StartGame()
+    {
+        StartTimer(); // Start the timer for the entire game session
+        StartRound(); // Start the first round
+    }
+
+
+    private void StartRound()
+    {
+        CreateNewQuestion();
+        if (timeLimit != int.MaxValue)
+        {
+            StartTimer();
+        }
+        else
+        {
+            TimerLabel.Text = "Time Left: Unlimited";
+        }
+    }
 
     private void GenerateNumbers()
     {
         int maxNumber = gameType != "Division" ? MAX_NUMBER_BASIC : MAX_NUMBER_DIVISION;
-        
+
         firstNumber = random.Next(MIN_NUMBER, maxNumber);
         secondNumber = random.Next(MIN_NUMBER, maxNumber);
 
@@ -66,33 +90,101 @@ public partial class GamePage : ContentPage
         }
     }
 
-    #region Timer
-
-    private void StartGame()
+    private string GetGameOperand() => gameType switch
     {
-        StartTimer(); // Start the timer for the entire game session
-        StartRound(); // Start the first round
+        "Addition" => "+",
+        "Subtraction" => "-",
+        "Multiplication" => "*",
+        "Division" => "/",
+        _ => string.Empty
+    };
+
+
+
+    #endregion
+
+    #region Game Logic
+
+    private void OnAnswerSubmitted(object sender, EventArgs e)
+    {
+        if (!int.TryParse(AnswerEntry.Text, out int answer))
+        {
+            AnswerLabel.Text = "Please enter a valid number";
+            return;
+        }
+
+        bool isCorrect = CheckAnswer(answer);
+        ProcessAnswer(isCorrect);
+        HandleRoundProgress();
     }
 
-    private void StartRound()
+    private bool CheckAnswer(int answer) => gameType switch
     {
-        CreateNewQuestion();
-        if (timeLimit != int.MaxValue)
+        "Addition" => answer == firstNumber + secondNumber,
+        "Subtraction" => answer == firstNumber - secondNumber,
+        "Multiplication" => answer == firstNumber * secondNumber,
+        "Division" => answer == firstNumber / secondNumber,
+        _ => false
+    };
+
+    private void ProcessAnswer(bool isCorrect)
+    {
+        if (isCorrect)
+            currentScore++;
+
+        AnswerLabel.Text = isCorrect ? "Correct" : "Incorrect";
+    }
+
+    private void HandleRoundProgress()
+    {
+        currentRound++;
+        timerCancellation?.Cancel(); // Stop current round's timer
+
+        if (currentRound <= totalRounds)
         {
-            StartTimer();
+            AnswerEntry.Text = string.Empty;
+            StartRound();
         }
         else
         {
-            TimerLabel.Text = "Time Left: Unlimited";
+            GameOver();
         }
     }
 
-    private void CreateNewQuestion()
+    private void GameOver()
     {
-        string gameOperand = GetGameOperand();
-        GenerateNumbers();
-        QuestionLabel.Text = $"{firstNumber} {gameOperand} {secondNumber}";
+        GameOperation gameOperation = GetGameOperation();
+
+        timerCancellation?.Cancel();
+        QuestionArea.IsVisible = false;
+        BackToMenuBtn.IsVisible = true;
+        GameOverLabel.Text = $"Game over! You got {currentScore} out of {totalRounds} right";
+
+        SaveGameResult(gameOperation);
     }
+
+    private GameOperation GetGameOperation() => gameType switch
+    {
+        "Addition" => GameOperation.Addition,
+        "Subtraction" => GameOperation.Subtraction,
+        "Multiplication" => GameOperation.Multiplication,
+        "Division" => GameOperation.Division,
+        _ => throw new ArgumentException("Invalid game type")
+    };
+
+    private void SaveGameResult(GameOperation gameOperation)
+    {
+        App.GameRepository.Add(new Game
+        {
+            DatePlayed = DateTime.UtcNow,
+            Type = gameOperation,
+            Score = currentScore
+        });
+    }
+
+    #endregion
+
+    #region Timer Management
 
     private void StartTimer()
     {
@@ -122,85 +214,12 @@ public partial class GamePage : ContentPage
 
     #endregion
 
-    private void OnAnswerSubmitted(object sender, EventArgs e)
-    {
-        if (!int.TryParse(AnswerEntry.Text, out int answer))
-        {
-            AnswerLabel.Text = "Please enter a valid number";
-            return;
-        }
-
-        bool isCorrect = CheckAnswer(answer);
-        ProcessAnswer(isCorrect);
-        HandleRoundProgress();
-    }
-
-    private bool CheckAnswer(int answer) => gameType switch
-    {
-        "Addition" => answer == firstNumber + secondNumber,
-        "Subtraction" => answer == firstNumber - secondNumber,
-        "Multiplication" => answer == firstNumber * secondNumber,
-        "Division" => answer == firstNumber / secondNumber,
-        _ => false
-    };
-
-    private void HandleRoundProgress()
-    {
-        currentRound++;
-        timerCancellation?.Cancel(); // Stop current round's timer
-
-        if (currentRound <= totalRounds)
-        {
-            AnswerEntry.Text = string.Empty;
-            StartRound();
-        }
-        else
-        {
-            GameOver();
-        }
-    }
-
-    private void GameOver()
-    {
-        GameOperation gameOperation = GetGameOperation();
-
-        timerCancellation?.Cancel();
-        QuestionArea.IsVisible = false;
-        BackToMenuBtn.IsVisible = true;
-        GameOverLabel.Text = $"Game over! You got {currentScore} out of {totalRounds} right";
-        
-        SaveGameResult(gameOperation);
-    }
-
-    private GameOperation GetGameOperation() => gameType switch
-    {
-        "Addition" => GameOperation.Addition,
-        "Subtraction" => GameOperation.Subtraction,
-        "Multiplication" => GameOperation.Multiplication,
-        "Division" => GameOperation.Division,
-        _ => throw new ArgumentException("Invalid game type")
-    };
-
-    private void SaveGameResult(GameOperation gameOperation)
-    {
-        App.GameRepository.Add(new Game
-        {
-            DatePlayed = DateTime.UtcNow,
-            Type = gameOperation,
-            Score = currentScore
-        });
-    }
-
-    private void ProcessAnswer(bool isCorrect)
-    {
-        if (isCorrect)
-            currentScore++;
-            
-        AnswerLabel.Text = isCorrect ? "Correct" : "Incorrect";
-    }
+    #region Navigation
 
     private void OnBackToMenu(object sender, EventArgs e)
     {
         Navigation.PushAsync(new MainPage());
     }
+
+    #endregion
 }
