@@ -19,7 +19,8 @@
 
             <Entry
                 x:Name="AnswerEntry"
-                HorizontalOptions="Center">
+                HorizontalOptions="Center"
+                Completed="OnAnswerCompleted"> <!--Handle Enter key-->
             </Entry>
 
             <Button

@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\barzi\\Documents\\GitHub\\Math-Game-MAUI\\MathGame\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4EC77009-77B2-4929-BCB0-A270C3AFE642}|MathGame\\MathGame.csproj|c:\\users\\barzi\\documents\\github\\math-game-maui\\mathgame\\mathgame\\gamepage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{4EC77009-77B2-4929-BCB0-A270C3AFE642}|MathGame\\MathGame.csproj|solutionrelative:mathgame\\gamepage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{4EC77009-77B2-4929-BCB0-A270C3AFE642}|MathGame\\MathGame.csproj|c:\\users\\barzi\\documents\\github\\math-game-maui\\mathgame\\mathgame\\gamepage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4EC77009-77B2-4929-BCB0-A270C3AFE642}|MathGame\\MathGame.csproj|solutionrelative:mathgame\\gamepage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4EC77009-77B2-4929-BCB0-A270C3AFE642}|MathGame\\MathGame.csproj|c:\\users\\barzi\\documents\\github\\math-game-maui\\mathgame\\mathgame\\gamepage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{4EC77009-77B2-4929-BCB0-A270C3AFE642}|MathGame\\MathGame.csproj|solutionrelative:mathgame\\gamepage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4EC77009-77B2-4929-BCB0-A270C3AFE642}|MathGame\\MathGame.csproj|c:\\users\\barzi\\documents\\github\\math-game-maui\\mathgame\\mathgame\\mainpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
@@ -30,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
@@ -54,8 +54,7 @@
               "RelativeToolTip": "MathGame\\MainPage.xaml",
               "ViewState": "AgIAAD0AAAAAAAAAAAAwwE4AAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-01-03T18:31:43.139Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-03T18:31:43.139Z"
             },
             {
               "$type": "Document",
@@ -71,26 +70,26 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "GamePage.xaml",
               "DocumentMoniker": "C:\\Users\\barzi\\Documents\\GitHub\\Math-Game-MAUI\\MathGame\\MathGame\\GamePage.xaml",
               "RelativeDocumentMoniker": "MathGame\\GamePage.xaml",
               "ToolTip": "C:\\Users\\barzi\\Documents\\GitHub\\Math-Game-MAUI\\MathGame\\MathGame\\GamePage.xaml",
               "RelativeToolTip": "MathGame\\GamePage.xaml",
-              "ViewState": "AgIAACEAAAAAAAAAAAAswDcAAAAlAAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAABYAAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-01-03T18:51:33.363Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "GamePage.xaml.cs",
               "DocumentMoniker": "C:\\Users\\barzi\\Documents\\GitHub\\Math-Game-MAUI\\MathGame\\MathGame\\GamePage.xaml.cs",
               "RelativeDocumentMoniker": "MathGame\\GamePage.xaml.cs",
               "ToolTip": "C:\\Users\\barzi\\Documents\\GitHub\\Math-Game-MAUI\\MathGame\\MathGame\\GamePage.xaml.cs",
               "RelativeToolTip": "MathGame\\GamePage.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAALgAAAAOAAAAAAAAAA==",
+              "ViewState": "AgIAADEAAAAAAAAAAAAAADYAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-12T17:46:15.232Z",
               "EditorCaption": ""

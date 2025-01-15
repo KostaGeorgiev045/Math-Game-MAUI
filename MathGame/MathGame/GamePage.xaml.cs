@@ -11,7 +11,7 @@ public partial class GamePage : ContentPage
     private const int MAX_NUMBER_BASIC = 9;
     private const int MAX_NUMBER_DIVISION = 99;
     
-    private readonly string gameType;
+    private readonly string gameType; // Type of math operation (e.g., Addition, Subtraction)
     private readonly int totalRounds;
     private readonly int timeLimit;
     private int currentRound;
@@ -20,24 +20,28 @@ public partial class GamePage : ContentPage
     private int firstNumber;
     private int secondNumber;
     private readonly Random random;
-    private CancellationTokenSource timerCancellation;
+    private CancellationTokenSource timerCancellation; // Used to manage and cancel timers
 
     #endregion
 
     #region Game Ininialization
 
+    // Constructor: Initializes the game, sets variables, and starts the game
     public GamePage(string gameType, int rounds, int timeLimit)
     {
         InitializeComponent();
         this.gameType = gameType;
         totalRounds = rounds;
+
+        // Set time limit (special case for unlimited time)
         this.timeLimit = timeLimit == 120 ? int.MaxValue : timeLimit; // Treat max as unlimited
         this.remainingTime = timeLimit == 120 ? int.MaxValue : timeLimit; // Initialize remainingTime
+
         currentRound = 1;
         currentScore = 0;
         random = new Random();
         
-        BindingContext = this;
+        BindingContext = this; // Set data binding context for UI
         StartGame();
     }
 
@@ -58,6 +62,8 @@ public partial class GamePage : ContentPage
     private void StartRound()
     {
         CreateNewQuestion();
+
+        // If there's a time limit, start a timer
         if (timeLimit != int.MaxValue)
         {
             StartTimer();
@@ -70,6 +76,7 @@ public partial class GamePage : ContentPage
 
     private void GenerateNumbers()
     {
+        // Choose maximum number based on game type
         int maxNumber = gameType != "Division" ? MAX_NUMBER_BASIC : MAX_NUMBER_DIVISION;
 
         firstNumber = random.Next(MIN_NUMBER, maxNumber);
@@ -99,11 +106,18 @@ public partial class GamePage : ContentPage
         _ => string.Empty
     };
 
-
-
     #endregion
 
     #region Game Logic
+
+    private void OnAnswerCompleted(object sender, EventArgs e)
+    {
+        // Reuse the existing answer submission logic
+        OnAnswerSubmitted(sender, e);
+
+        // Refocus the AnswerEntry to allow continuous typing
+        AnswerEntry.Focus();
+    }
 
     private void OnAnswerSubmitted(object sender, EventArgs e)
     {
@@ -116,6 +130,9 @@ public partial class GamePage : ContentPage
         bool isCorrect = CheckAnswer(answer);
         ProcessAnswer(isCorrect);
         HandleRoundProgress();
+
+        // Clear the text field (already refocused in OnAnswerCompleted)
+        AnswerEntry.Text = string.Empty;
     }
 
     private bool CheckAnswer(int answer) => gameType switch
@@ -186,12 +203,14 @@ public partial class GamePage : ContentPage
 
     #region Timer Management
 
+    // Starts the game timer and updates the UI
     private void StartTimer()
     {
-        timerCancellation?.Cancel();
-        timerCancellation = new CancellationTokenSource();
+        timerCancellation?.Cancel(); // Cancel any previous timers
+        timerCancellation = new CancellationTokenSource(); // Create a new cancellation token
         var token = timerCancellation.Token;
 
+        // Run the timer asynchronously
         Task.Run(async () =>
         {
             while (remainingTime > 0 && !token.IsCancellationRequested)
@@ -201,6 +220,7 @@ public partial class GamePage : ContentPage
                 remainingTime--;
             }
 
+            // Handle timeout
             if (remainingTime <= 0 && !token.IsCancellationRequested)
             {
                 Dispatcher.Dispatch(() =>
